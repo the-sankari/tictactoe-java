@@ -1,6 +1,21 @@
 import java.util.Scanner;
 
 public class Tictactoe {
+
+    // Method for randomized starting the game 
+
+    private static int randomizedStartingPlayer(){
+        // Get a number between 1 - 100
+        int startNum = (int)(Math.random() * 100 + 1);
+
+        // If number is even, return 1. Ohterwise return 2
+        int ret = (startNum % 2 == 0) ? (1) : (2);
+        return ret;
+    }
+
+    //
+
+
     // main method
     public static void main(String[] args) {
         // assign the greeting in variable
