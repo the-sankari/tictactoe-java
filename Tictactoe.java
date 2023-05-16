@@ -16,9 +16,22 @@ public class Tictactoe {
     // showBoard method preliminary version
     private static void showBoard(int[][] gameboard){
         int square = 1; // for numbering squares. First square number is 1
+
+        final int cross = character('X');
+        final int zero = character('0');
+
         for (int row = 0; row < gameboard.length; ++row) {
             for (int col = 0; col < gameboard[row].length; ++col) {
+                
+                // print cross. zero or square number
+                if (gameboard [row][col] == cross) {
+                    System.out.print('X'); // print X
+                } else if(gameboard [row][col] == zero) {
+                    System.out.print('0'); // print 0
+                }
+
                 System.out.print(square); // print the square number
+                
                 if (col == gameboard[row].length-1) {
                     // last number of the row printed, print a line change
                     System.out.println();
@@ -35,6 +48,39 @@ public class Tictactoe {
             }
         }
     }
+
+    private static int character(char c) {
+        return 0;
+    }
+
+    // saveMove method
+    private static boolean saveMove(int[][] gameboard, int pNo, int r){
+        int square = 1; // index of the checked element
+        final int cross = character('X');
+        final int zero = character('0');
+
+        for (int row = 0; row < gameboard.length; ++row) {
+            for (int col = 0; col < gameboard[row].length; ++col) {
+                // in the square player chose
+                if (square == r){
+                    if(gameboard[row][col] == cross || gameboard[row][col] == zero){
+                        // chosen place already has a cross or zero
+                        return false;
+                    }else{
+                        // no character already ----> place a cross or zero
+                        int character = (pNo == 1) ? cross : zero;
+                        gameboard[row][col] = character;
+                        return true;
+                    }
+                }
+                square++; // move to the next element
+            }
+        }
+        /*if execution reaches this point. saving the character was unsuccessfull and false is returned */
+        return false;
+    }
+
+
 
     // main method
     public static void main(String[] args) {
