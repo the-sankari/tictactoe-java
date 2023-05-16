@@ -2,49 +2,47 @@ import java.util.Scanner;
 
 public class Tictactoe {
 
-    // Method for randomized starting the game 
+    // Method for randomized starting the game
 
-    private static int randomizedStartingPlayer(){
+    private static int randomizedStartingPlayer() {
         // Get a number between 1 - 100
-        int startNum = (int)(Math.random() * 100 + 1);
+        int startNum = (int) (Math.random() * 100 + 1);
 
         // If number is even, return 1. Ohterwise return 2
         int ret = (startNum % 2 == 0) ? (1) : (2);
         return ret;
     }
 
-    // showBoard method 
-    private static void showBoard(int[][] gameboard){
+    // showBoard method
+    private static void showBoard(int[][] gameBoard) {
         int square = 1; // for numbering squares. First square number is 1
 
-        final int cross = character('X');
-        final int zero = character('0');
+        char cross = 'X';
+        char zero = '0';
 
-        for (int row = 0; row < gameboard.length; ++row) {
-            for (int col = 0; col < gameboard[row].length; ++col) {
-                
-                // print cross. zero or square number
-                if (gameboard [row][col] == cross) {
-                    System.out.print('X'); // print X
-                } else if(gameboard [row][col] == zero) {
-                    System.out.print('0'); // print 0
-                }
+        for (int row = 0; row < gameBoard.length; ++row) {
+            for (int col = 0; col < gameBoard[row].length; ++col) {
 
-                System.out.print(square); // print the square number
-                
-                if (col == gameboard[row].length-1) {
-                    // last number of the row printed, print a line change
-                    System.out.println();
-                    
+                // print cross, zero, or square number
+                if (gameBoard[row][col] == character(cross)) {
+                    System.out.print(cross); // print X
+                } else if (gameBoard[row][col] == character(zero)) {
+                    System.out.print(zero); // print 0
                 } else {
-                    // after the first and second number of each row print a | character
-                    System.out.println('|');
-                    square++; // number of next square is one bigger than the previous
+                    System.out.print(square); // print the square number
                 }
 
-                if(row != gameboard.length - 1)
-                System.out.println("-++-");
+                if (col != gameBoard[row].length - 1) {
+                    System.out.print('|'); // print the vertical separator
+                }
 
+                square++; // increment square number
+            }
+
+            System.out.println(); // print a new line after each row
+
+            if (row != gameBoard.length - 1) {
+                System.out.println("---+---"); // print horizontal separator line
             }
         }
     }
@@ -52,91 +50,93 @@ public class Tictactoe {
     private static int character(char m) {
         if (m == 'X') {
             return 1;
-        } else if(m == '0') {
+        } else if (m == '0') {
             return 2;
-        }else{
+        } else {
 
             return 0;
         }
     }
 
     // saveMove method
-    private static boolean saveMove(int[][] gameboard, int pNo, int r){
+    private static boolean saveMove(int[][] gameBoard, int pNo, int r) {
         int square = 1; // index of the checked element
         final int cross = character('X');
         final int zero = character('0');
 
-        for (int row = 0; row < gameboard.length; ++row) {
-            for (int col = 0; col < gameboard[row].length; ++col) {
+        for (int row = 0; row < gameBoard.length; ++row) {
+            for (int col = 0; col < gameBoard[row].length; ++col) {
                 // in the square player chose
-                if (square == r){
-                    if(gameboard[row][col] == cross || gameboard[row][col] == zero){
+                if (square == r) {
+                    if (gameBoard[row][col] == cross || gameBoard[row][col] == zero) {
                         // chosen place already has a cross or zero
                         return false;
-                    }else{
+                    } else {
                         // no character already ----> place a cross or zero
                         int character = (pNo == 1) ? cross : zero;
-                        gameboard[row][col] = character;
+                        gameBoard[row][col] = character;
                         return true;
                     }
                 }
                 square++; // move to the next element
             }
         }
-        /*if execution reaches this point. saving the character was unsuccessfull and false is returned */
+        /*
+         * if execution reaches this point. saving the character was unsuccessfull and
+         * false is returned
+         */
         return false;
     }
 
-    private static int checkWinner(int[][] gameboard){
-        // calculate the squares of numbers presenting cross and zero 
+    private static int checkWinner(int[][] gameBoard) {
+        // calculate the squares of numbers presenting cross and zero
         final int threeCrosses = character('X') * character('X') * character('X');
         final int threeZeros = character('0') * character('0') * character('0');
 
         // Check horizontal lines, row multiplication
-        for (int row = 0; row < gameboard.length; ++row) {
-            int multi = gameboard[row][0] * gameboard[row][1] * gameboard[row][2];
-            
+        for (int row = 0; row < gameBoard.length; ++row) {
+            int multi = gameBoard[row][0] * gameBoard[row][1] * gameBoard[row][2];
+
             // Three crosses in a line?
-            if(multi == threeCrosses)
+            if (multi == threeCrosses)
                 return 1; // player 1 won
-            
-            //Three zeros in a line
-            if(multi == threeZeros)
+
+            // Three zeros in a line
+            if (multi == threeZeros)
                 return 2; // player 2 won
         }
 
         // Check for vertical line, cloumn multiplication
-        for (int col = 0; col < gameboard.length; ++col) {
-            int multi = gameboard[0][col] * gameboard[1][col] * gameboard[2][col];
+        for (int col = 0; col < gameBoard.length; ++col) {
+            int multi = gameBoard[0][col] * gameBoard[1][col] * gameBoard[2][col];
 
-            //three crosses in a line?
-            if(multi == threeCrosses)
+            // three crosses in a line?
+            if (multi == threeCrosses)
                 return 1; // player 1 won
-            if(multi == threeZeros)
+            if (multi == threeZeros)
                 return 2; // player 2 won
         }
 
         // finally check for diagonal lines
 
         // from top left to bottom right
-        int tlbr = gameboard[0][0] * gameboard[1][1] * gameboard[2][2];
+        int tlbr = gameBoard[0][0] * gameBoard[1][1] * gameBoard[2][2];
 
         // from bottom left to top right
-        int bltr = gameboard[2][0] * gameboard[1][1] * gameboard[0][2];
+        int bltr = gameBoard[2][0] * gameBoard[1][1] * gameBoard[0][2];
 
-        //three crosses in a line
-        if(tlbr == threeCrosses || bltr == threeCrosses)
+        // three crosses in a line
+        if (tlbr == threeCrosses || bltr == threeCrosses)
             return 1; // player 1 won
-        
+
         // three zeros in a line
-        if(tlbr == threeZeros || bltr == threeZeros)
+        if (tlbr == threeZeros || bltr == threeZeros)
             return 2; // player 2 won
 
         // If execution reaches this point, winner is not known
         return 0;
 
     }
-
 
     // main method
     public static void main(String[] args) {
@@ -147,7 +147,7 @@ public class Tictactoe {
         String name1, name2;
 
         // Array for the game board
-        int[][] gameboard = {
+        int[][] gameBoard = {
                 { 0, 0, 0 },
                 { 0, 0, 0 },
                 { 0, 0, 0 }
@@ -178,13 +178,13 @@ public class Tictactoe {
         turn = randomizedStartingPlayer();
 
         // Show empty game board
-        showBoard(gameboard);
+        showBoard(gameBoard);
 
         do {
             // Ask for move from the player in turn
             System.out.print("Player " + turn + ": ");
             int square = reader.nextInt();
-            boolean moveOk = saveMove(gameboard, turn, square);
+            boolean moveOk = saveMove(gameBoard, turn, square);
             if (moveOk) {
                 // Move successfull, change turns
                 turn = (turn == 1) ? 2 : 1;
@@ -192,10 +192,10 @@ public class Tictactoe {
                 moves--;
 
                 // Show game situation
-                showBoard(gameboard);
+                showBoard(gameBoard);
 
                 // Check for the winner
-                winner = checkWinner(gameboard);
+                winner = checkWinner(gameBoard);
 
             } else {
                 // Move invalid, print report
