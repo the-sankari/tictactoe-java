@@ -13,8 +13,28 @@ public class Tictactoe {
         return ret;
     }
 
-    //
+    // showBoard method preliminary version
+    private static void showBoard(int[][] gameboard){
+        int square = 1; // for numbering squares. First square number is 1
+        for (int row = 0; row < gameboard.length; ++row) {
+            for (int col = 0; col < gameboard[row].length; ++col) {
+                System.out.print(square); // print the square number
+                if (col == gameboard[row].length-1) {
+                    // last number of the row printed, print a line change
+                    System.out.println();
+                    
+                } else {
+                    // after the first and second number of each row print a | character
+                    System.out.println('|');
+                    square++; // number of next square is one bigger than the previous
+                }
 
+                if(row != gameboard.length - 1)
+                System.out.println("-++-");
+
+            }
+        }
+    }
 
     // main method
     public static void main(String[] args) {
