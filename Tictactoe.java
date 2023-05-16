@@ -13,7 +13,7 @@ public class Tictactoe {
         return ret;
     }
 
-    // showBoard method preliminary version
+    // showBoard method 
     private static void showBoard(int[][] gameboard){
         int square = 1; // for numbering squares. First square number is 1
 
@@ -49,8 +49,15 @@ public class Tictactoe {
         }
     }
 
-    private static int character(char c) {
-        return 0;
+    private static int character(char m) {
+        if (m == 'X') {
+            return 1;
+        } else if(m == '0') {
+            return 2;
+        }else{
+
+            return 0;
+        }
     }
 
     // saveMove method
@@ -80,6 +87,55 @@ public class Tictactoe {
         return false;
     }
 
+    private static int checkWinner(int[][] gameboard){
+        // calculate the squares of numbers presenting cross and zero 
+        final int threeCrosses = character('X') * character('X') * character('X');
+        final int threeZeros = character('0') * character('0') * character('0');
+
+        // Check horizontal lines, row multiplication
+        for (int row = 0; row < gameboard.length; ++row) {
+            int multi = gameboard[row][0] * gameboard[row][1] * gameboard[row][2];
+            
+            // Three crosses in a line?
+            if(multi == threeCrosses)
+                return 1; // player 1 won
+            
+            //Three zeros in a line
+            if(multi == threeZeros)
+                return 2; // player 2 won
+        }
+
+        // Check for vertical line, cloumn multiplication
+        for (int col = 0; col < gameboard.length; ++col) {
+            int multi = gameboard[0][col] * gameboard[1][col] * gameboard[2][col];
+
+            //three crosses in a line?
+            if(multi == threeCrosses)
+                return 1; // player 1 won
+            if(multi == threeZeros)
+                return 2; // player 2 won
+        }
+
+        // finally check for diagonal lines
+
+        // from top left to bottom right
+        int tlbr = gameboard[0][0] * gameboard[1][1] * gameboard[2][2];
+
+        // from bottom left to top right
+        int bltr = gameboard[2][0] * gameboard[1][1] * gameboard[0][2];
+
+        //three crosses in a line
+        if(tlbr == threeCrosses || bltr == threeCrosses)
+            return 1; // player 1 won
+        
+        // three zeros in a line
+        if(tlbr == threeZeros || bltr == threeZeros)
+            return 2; // player 2 won
+
+        // If execution reaches this point, winner is not known
+        return 0;
+
+    }
 
 
     // main method
@@ -119,7 +175,7 @@ public class Tictactoe {
         name2 = reader.nextLine();
 
         // Randomized who starts first
-        turn = randomizeStart();
+        turn = randomizedStartingPlayer();
 
         // Show empty game board
         showBoard(gameboard);
